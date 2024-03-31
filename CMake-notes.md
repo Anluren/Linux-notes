@@ -41,3 +41,14 @@ if(patch_result EQUAL 0)
     endif()
 endif()
 ```
+
+```cmake
+#check gcc version
+if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if(CMAKE_CXX_COMPILER_VERSION VERSION_EQUAL "11")
+        message("GCC version is exactly 11!")
+    else()
+        message("GCC version is not 11!")
+    endif()
+endif()
+```
