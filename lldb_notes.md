@@ -30,3 +30,12 @@ watchpoint delete
 frame variable variable_name
 p variable_name
 ```
+
+```bash
+# Add a new format for uint that displays in binary
+type format add --format binary uint
+
+# Print the variable in the new format
+p variable_name
+```
+
