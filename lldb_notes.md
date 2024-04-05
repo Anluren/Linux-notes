@@ -9,3 +9,24 @@ watchpoint set expression &bytes[0]
 
 watchpoint set expression -- (uint32_t*)0x12345678
 ```
+
+```bash
+#list watchpoint
+watchpoint list
+
+# verbose option
+watchpoint list -v
+
+#delete watchpoint
+watchpoint delete 1
+
+# delete all
+watchpoint delete
+```
+
+- **Examine memory**: `memory read --size 4 --format x --count 1 0x12345678`
+
+```bash
+frame variable variable_name
+p variable_name
+```
