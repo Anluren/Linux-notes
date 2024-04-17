@@ -26,3 +26,9 @@ unsigned int rotate_right(unsigned int count) {
     return result;
 }
 ```
+
+a macro which is compiled to ror
+
+```c++
+#define ROR(x,y) ((unsigned)(x) >> (y) | (unsigned)(x) << 32 - (y))
+```
