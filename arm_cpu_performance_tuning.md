@@ -32,3 +32,14 @@ a macro which is compiled to ror
 ```c++
 #define ROR(x,y) ((unsigned)(x) >> (y) | (unsigned)(x) << 32 - (y))
 ```
+it turns out, a constexpr should also work
+
+```c++
+constexpr unsigned int rotate_left(unsigned int value, int shift) {
+    return (value << shift) | (value >> ((sizeof(value)*8) - shift));
+}
+
+constexpr unsigned int rotate_right(unsigned int value, int shift) {
+    return (value >> shift) | (value << ((sizeof(value)*8) - shift));
+}
+```
