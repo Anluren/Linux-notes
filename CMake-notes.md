@@ -54,7 +54,7 @@ endif()
 ```
 
 use clang and libc++ if it's present
-```c++
+```cmake
 # Check if Clang is installed
 find_program(CLANG clang)
 if(CLANG)
@@ -81,4 +81,4 @@ if(CLANG)
 else()
     message(WARNING "Clang not found! Using default compiler.")
 endif()
-``
+```
