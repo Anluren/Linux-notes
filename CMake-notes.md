@@ -52,3 +52,33 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     endif()
 endif()
 ```
+
+use clang and libc++ if it's present
+```c++
+# Check if Clang is installed
+find_program(CLANG clang)
+if(CLANG)
+    # Set Clang as the compiler
+    set(CMAKE_C_COMPILER clang)
+    set(CMAKE_CXX_COMPILER clang++)
+
+    # Check if LLVM's libc++ is installed
+    include(CheckCXXSourceCompiles)
+    set(CMAKE_REQUIRED_FLAGS "-stdlib=libc++")
+    CHECK_CXX_SOURCE_COMPILES("
+    #include <ciso646>
+    int main() {
+        return 0;
+    }
+    " LIBCXX_FOUND)
+
+    if(LIBCXX_FOUND)
+        # Set libc++ as the standard library
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++")
+    else()
+        message(WARNING "LLVM's libc++ not found! Using default C++ standard library.")
+    endif()
+else()
+    message(WARNING "Clang not found! Using default compiler.")
+endif()
+``
