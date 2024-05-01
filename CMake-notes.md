@@ -58,9 +58,13 @@ use clang and libc++ if it's present
 # Check if Clang is installed
 find_program(CLANG clang)
 if(CLANG)
-    # Set Clang as the compiler
-    set(CMAKE_C_COMPILER clang)
-    set(CMAKE_CXX_COMPILER clang++)
+    # Get the directory of Clang and Clang++
+    get_filename_component(CLANG_DIR ${CLANG} DIRECTORY)
+    get_filename_component(CLANGXX_DIR ${CLANGXX} DIRECTORY)
+
+    # Set the C and C++ compilers to Clang with full path
+    set(CMAKE_C_COMPILER ${CLANG_DIR}/${CLANG})
+    set(CMAKE_CXX_COMPILER ${CLANGXX_DIR}/${CLANGXX})
 
     # Check if LLVM's libc++ is installed
     include(CheckCXXSourceCompiles)
@@ -81,4 +85,59 @@ if(CLANG)
 else()
     message(WARNING "Clang not found! Using default compiler.")
 endif()
+```
+
+
+```cmake
+# Check if target is ARM architecture
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
+    message("ARM architecture detected!")
+endif()
+
+# Check if target is x86 architecture
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86")
+    message("x86 architecture detected!")
+endif()
+
+# Check if target is x86_64 architecture
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64")
+    message("x86_64 architecture detected!")
+endif()
+
+# check target is ARM or arm64
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm" OR CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")
+    message("ARM or ARM64 architecture detected!")
+endif()
+```
+
+```cmake
+# in cross-compiling, check if target is ARM architecture
+
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
+    message("ARM architecture detected!")
+    set(CMAKE_C_COMPILER arm-linux-gnueabihf-gcc)
+    set(CMAKE_CXX_COMPILER arm-linux-gnueabihf-g++)
+endif()
+```
+
+```c++
+# Check if target is ARM architecture
+#ifdef __arm__
+    message("ARM architecture detected!")
+#elif defined(__x86_64__) || defined(_M_X64)
+    message("x86_64 architecture detected!")
+#elif defined(__i386__) || defined(_M_IX86)
+    message("x86 architecture detected!")
+#else
+    message("Unknown architecture detected!")
+#endif
+// Check if target is ARM32 architecture
+#if defined(__arm__) && !defined(__aarch64__)
+    message("ARM32 architecture detected!")
+#endif
+
+// Check if target is ARM64 architecture
+#if defined(__aarch64__)
+    message("ARM64 architecture detected!")
+#endif
 ```
