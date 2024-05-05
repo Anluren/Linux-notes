@@ -141,3 +141,24 @@ endif()
     message("ARM64 architecture detected!")
 #endif
 ```
+
+```cmake
+if(CMAKE_CXX_FLAGS MATCHES "-m32" OR CMAKE_C_FLAGS MATCHES "-m32")
+    message("The -m32 option is set.")
+else()
+    message("The -m32 option is not set.")
+endif()
+```
+
+```cmake
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_C_COMPILER_ID STREQUAL "Clang")
+    message("Clang compiler is being used.")
+    if(CMAKE_CXX_FLAGS MATCHES "-m32" OR CMAKE_C_FLAGS MATCHES "-m32")
+        message("The -m32 option is set.")
+    else()
+        message("The -m32 option is not set.")
+    endif()
+else()
+    message("Clang compiler is not being used.")
+endif()
+```
