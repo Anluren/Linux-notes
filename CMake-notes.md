@@ -162,3 +162,16 @@ else()
     message("Clang compiler is not being used.")
 endif()
 ```
+
+```cmake
+execute_process(COMMAND cmd ARGS arg1 arg2
+                RESULT_VARIABLE cmd_result
+                OUTPUT_VARIABLE cmd_output)
+
+if(NOT ${cmd_result} EQUAL 0)
+    message(WARNING "Command failed with error: ${cmd_result}")
+    message(WARNING "Output: ${cmd_output}")
+else()
+    message("Command succeeded with output: ${cmd_output}")
+endif()
+```
