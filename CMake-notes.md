@@ -175,3 +175,17 @@ else()
     message("Command succeeded with output: ${cmd_output}")
 endif()
 ```
+
+#choose Nina if it's installed
+```bash
+#!/bin/bash
+
+# Try to find Ninja
+ninja_path=$(which ninja)
+
+if [[ -n "$ninja_path" ]]; then
+    cmake -G Ninja ..
+else
+    cmake -G "Unix Makefiles" ..
+fi
+```
