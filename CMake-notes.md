@@ -189,3 +189,40 @@ else
     cmake -G "Unix Makefiles" ..
 fi
 ```
+
+```cmake
+#[[
+CMake's FetchContent module does not directly support switching between HTTPS and SSH URLs if one of them isn't working. However, you can implement this functionality yourself by checking if the FetchContent_MakeAvailable command succeeds for one URL and, if not, trying again with the other URL.
+]]
+
+include(FetchContent)
+
+set(MYLIB_HTTPS_URL https://github.com/username/mylib.git)
+set(MYLIB_SSH_URL git@github.com:username/mylib.git)
+
+FetchContent_Declare(
+  mylib
+  GIT_REPOSITORY ${MYLIB_HTTPS_URL}
+  GIT_TAG        v1.0.0
+)
+
+# Try to fetch the content using the HTTPS URL
+execute_process(
+  COMMAND ${CMAKE_COMMAND} -E fetch_content mylib
+  RESULT_VARIABLE result
+)
+
+# If the fetch failed, try again with the SSH URL
+if(result)
+  message("Failed to fetch content using HTTPS URL, trying with SSH URL...")
+  FetchContent_Declare(
+    mylib
+    GIT_REPOSITORY ${MYLIB_SSH_URL}
+    GIT_TAG        v1.0.0
+  )
+  FetchContent_MakeAvailable(mylib)
+else()
+  FetchContent_MakeAvailable(mylib)
+endif()
+
+```

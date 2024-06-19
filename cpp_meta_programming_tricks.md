@@ -33,3 +33,29 @@ constexpr auto barrel_shift(std::index_sequence<Is...>) {
 auto result = barrel_shift<1>(std::index_sequence<0, 1, 2, 3, 4, 5, 6, 7, 8, 9>{});
 static_assert(std::is_same_v<decltype(result), std::index_sequence<1, 2, 3, 4, 5, 6, 7, 8, 9, 0>>); 
 ```
+
+```c++
+#include <type_traits>
+
+// Helper struct to check for the existence of a member function
+template <typename T, typename = void>
+struct has_member_func : std::false_type {};
+
+template <typename T>
+struct has_member_func<T, std::void_t<decltype(&T::member_func)>> : std::true_type {};
+
+// Test class with the member function
+class MyClass {
+public:
+    void member_func() {}
+};
+
+// Test class without the member function
+class MyOtherClass {};
+
+int main() {
+    static_assert(has_member_func<MyClass>::value, "MyClass should have member_func");
+    static_assert(!has_member_func<MyOtherClass>::value, "MyOtherClass should not have member_func");
+    return 0;
+}
+```
