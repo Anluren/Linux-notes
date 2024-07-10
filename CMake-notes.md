@@ -189,3 +189,47 @@ else
     cmake -G "Unix Makefiles" ..
 fi
 ```
+
+```cmake
+# for cmake version since 3.29
+# Attempt to find lld by checking its version
+execute_process(COMMAND lld --version
+                RESULT_VARIABLE lld_result
+                OUTPUT_VARIABLE lld_version_output
+                ERROR_QUIET
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# Check if the command was successful (result variable is 0)
+if(lld_result EQUAL 0)
+    message(STATUS "LLD linker found: ${lld_version_output}")
+
+    # Explicitly set lld as the linker
+    set(CMAKE_LINKER "lld" CACHE FILEPATH "LLD linker" FORCE)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fuse-ld=lld" CACHE STRING "Use LLD linker" FORCE)
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -fuse-ld=lld" CACHE STRING "Use LLD linker" FORCE)
+    set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} -fuse-ld=lld" CACHE STRING "Use LLD linker" FORCE)
+else()
+    message(STATUS "LLD linker not found. Using default system linker.")
+endif()
+```
+
+```
+# for cmake version prior to 3.29
+# Attempt to find lld by checking its version
+execute_process(COMMAND lld --version
+                RESULT_VARIABLE lld_result
+                OUTPUT_VARIABLE lld_version_output
+                ERROR_QUIET
+                OUTPUT_STRIP_TRAILING_WHITESPACE)
+
+# Check if the command was successful (result variable is 0)
+if(lld_result EQUAL 0)
+    message(STATUS "LLD linker found: ${lld_version_output}")
+
+    # For older CMake versions, set linker flags for C and C++ directly
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fuse-ld=lld" CACHE STRING "Use LLD linker for C" FORCE)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fuse-ld=lld" CACHE STRING "Use LLD linker for C++" FORCE)
+else()
+    message(STATUS "LLD linker not found. Using default system linker.")
+endif()
+```
