@@ -87,7 +87,6 @@ else()
 endif()
 ```
 
-
 ```cmake
 # Check if target is ARM architecture
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "arm")
@@ -279,12 +278,37 @@ ExternalProject_Add(
     PREFIX ${CMAKE_BINARY_DIR}/external_project_name
     SOURCE_DIR ${CMAKE_SOURCE_DIR}/path/to/external/project
     CONFIGURE_COMMAND ""  # Skip configure step if not needed
-    BUILD_COMMAND make    # Command to build the project
+    BUILD_COMMAND cd ${CMAKE_SOURCE_DIR}/path/to/build/directory && make  # Change directory and run make
     INSTALL_COMMAND ""    # No install command
     BUILD_IN_SOURCE 1     # Build in the source directory
+    BUILD_BYPRODUCTS 
+        ${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build/libexternal_project_name.so
+        ${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build/libexternal_project_name.dylib
+        ${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build/external_project_name.dll
 )
 
 # Manually specify include directories and library paths
 include_directories(${CMAKE_SOURCE_DIR}/path/to/external/project/include)
 link_directories(${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build)
+
+# Create an imported library target
+add_library(external_project_name_lib SHARED IMPORTED)
+
+# Set the IMPORTED_LOCATION property based on the platform
+if (UNIX AND NOT APPLE)
+    set_target_properties(external_project_name_lib PROPERTIES
+        IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build/libexternal_project_name.so
+    )
+elseif (APPLE)
+    set_target_properties(external_project_name_lib PROPERTIES
+        IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build/libexternal_project_name.dylib
+    )
+elseif (WIN32)
+    set_target_properties(external_project_name_lib PROPERTIES
+        IMPORTED_LOCATION ${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build/external_project_name.dll
+    )
+endif()
+
+# Link the imported library to your target
+target_link_libraries(your_target_name external_project_name_lib)
 ```
