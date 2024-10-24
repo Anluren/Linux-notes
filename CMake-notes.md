@@ -267,3 +267,24 @@ else()
 endif()
 
 ```
+
+```cmake
+# ---------------------------------------------------------------------------------------
+# External project configuration
+# ---------------------------------------------------------------------------------------
+include(ExternalProject)
+
+ExternalProject_Add(
+    external_project_name
+    PREFIX ${CMAKE_BINARY_DIR}/external_project_name
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/path/to/external/project
+    CONFIGURE_COMMAND ""  # Skip configure step if not needed
+    BUILD_COMMAND make    # Command to build the project
+    INSTALL_COMMAND ""    # No install command
+    BUILD_IN_SOURCE 1     # Build in the source directory
+)
+
+# Manually specify include directories and library paths
+include_directories(${CMAKE_SOURCE_DIR}/path/to/external/project/include)
+link_directories(${CMAKE_BINARY_DIR}/external_project_name/src/external_project_name-build)
+```
