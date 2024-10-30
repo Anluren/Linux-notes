@@ -89,3 +89,30 @@ Alice -> Bob: Hello Bob!
 Bob -> Alice: Hi Alice!
 @enduml
 ----
+
+== Section 7: Table with Borders and Code Block
+
+Here is an example of a table with borders and a code block:
+
+[%header, frame=all, grid=all]
+|===
+| Column 1 | Column 2 | Column 3
+
+| Row 1, Col 1
+| Row 1, Col 2
+| Row 1, Col 3
+
+| Row 2, Col 1
+| Row 2, Col 2
+a| 
+[source,cpp]
+----
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
+----
+|===
+
