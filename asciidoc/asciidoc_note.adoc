@@ -1,0 +1,43 @@
+= My AsciiDoc Document
+Author Name
+2023-10-10
+
+== Introduction
+
+This is a simple AsciiDoc document. AsciiDoc is a lightweight markup language that is used to write documentation, articles, books, and more.
+
+== Section 1
+
+In this section, we will cover some basic AsciiDoc syntax.
+
+=== Subsection 1.1
+
+You can create subsections using three equal signs.
+
+* Bullet points
+* Are created
+* Like this
+
+=== Subsection 1.2
+
+You can also create numbered lists:
+
+. First item
+. Second item
+. Third item
+
+== Section 2
+
+AsciiDoc supports various formatting options:
+
+  This paragraph is indented by two spaces.
+
+
+[.indent]
+====
+This paragraph is indented using a custom style.
+====
+
+You can also create links:
+
+include::additional_content.adoc[]

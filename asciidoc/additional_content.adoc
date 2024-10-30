@@ -1,0 +1,17 @@
+== Additional Section
+
+This is an additional section included from another AsciiDoc file.
+
+=== Subsection 3.1
+
+More content can be added here.
+
+* Additional bullet point 1
+* Additional bullet point 2
+
+=== Subsection 3.2
+
+Even more content can be added here.
+
+. Additional numbered item 1
+. Additional numbered item 2
