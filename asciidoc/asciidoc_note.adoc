@@ -3,6 +3,7 @@ Author Name
 2023-10-10
 :sectnums:
 :source-highlighter: rouge
+:plantuml:
 
 == Introduction
 
@@ -75,4 +76,16 @@ int main() {
     std::cout << "Hello, World!" << std::endl;
     return 0;
 }
+----
+
+== Section 6: PlantUML Diagram Example
+
+Here is an example of a PlantUML diagram using the `plantuml` block:
+
+[plantuml, format=svg]
+----
+@startuml
+Alice -> Bob: Hello Bob!
+Bob -> Alice: Hi Alice!
+@enduml
 ----

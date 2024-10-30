@@ -10,13 +10,13 @@ ASCIIDOC_ADDITIONAL_FILES = $(filter-out $(ASCIIDOC_MAIN_FILE), $(wildcard *.ado
 # Default target
 all: $(PDF_FILE) $(HTML_FILE)
 
-# Rule to convert AsciiDoc to PDF with custom theme
+# Rule to convert AsciiDoc to PDF with custom theme and section numbers
 $(PDF_FILE): $(ASCIIDOC_MAIN_FILE) $(ASCIIDOC_ADDITIONAL_FILES) $(THEME_FILE)
-	asciidoctor-pdf -a pdf-theme=$(THEME_FILE) $(ASCIIDOC_MAIN_FILE) -o $(PDF_FILE)
+	asciidoctor-pdf -r asciidoctor-diagram -a pdf-theme=$(THEME_FILE) -a sectnums $(ASCIIDOC_MAIN_FILE) -o $(PDF_FILE)
 
-# Rule to convert AsciiDoc to HTML
+# Rule to convert AsciiDoc to HTML with section numbers
 $(HTML_FILE): $(ASCIIDOC_MAIN_FILE) $(ASCIIDOC_ADDITIONAL_FILES)
-	asciidoctor $(ASCIIDOC_MAIN_FILE) -o $(HTML_FILE)
+	asciidoctor -r asciidoctor-diagram -a sectnums $(ASCIIDOC_MAIN_FILE) -o $(HTML_FILE)
 
 # Clean target to remove the generated files
 clean:
