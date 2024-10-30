@@ -78,3 +78,8 @@ generating slide:
 asciidoctor-revealjs -r asciidoctor-diagram my_presentation.adoc
 ```
 
+8. **Preview Slides with Live Server** (Optional):
+    - Install the Live Server extension in Visual Studio Code.
+    - Open your workspace in Visual Studio Code.
+    - Right-click on the generated `yourfile.html` file and select "Open with Live Server".
+    - Your default web browser will open and display the slides. Any changes you make to the AsciiDoc file will be automatically reflected in the browser.

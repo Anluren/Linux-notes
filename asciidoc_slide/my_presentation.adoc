@@ -11,6 +11,11 @@ Author Name
 
 This is the content of the first slide.
 
+[NOTE]
+====
+These are speaker notes for Slide 1.
+====
+
 == Slide 2
 
 This is the content of the second slide.
@@ -25,6 +30,11 @@ int main() {
 }
 ----
 
+[NOTE]
+====
+These are speaker notes for Slide 2.
+====
+
 == Slide 3
 
 This is the content of the third slide.
@@ -36,3 +46,8 @@ Alice -> Bob: Hello Bob!
 Bob -> Alice: Hi Alice!
 @enduml
 ----
+
+[NOTE]
+====
+These are speaker notes for Slide 3.
+====
