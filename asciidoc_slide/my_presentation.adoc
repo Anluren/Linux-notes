@@ -1,0 +1,38 @@
+= My Presentation
+Author Name
+:revealjs_theme: white
+:revealjs_transition: slide
+:revealjsdir: reveal.js/reveal.js-4.1.0
+:stylesheet: custom.css
+:source-highlighter: rouge
+:plantuml:
+
+== Slide 1
+
+This is the content of the first slide.
+
+== Slide 2
+
+This is the content of the second slide.
+
+[source,cpp]
+----
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
+----
+
+== Slide 3
+
+This is the content of the third slide.
+
+[plantuml, format=svg]
+----
+@startuml
+Alice -> Bob: Hello Bob!
+Bob -> Alice: Hi Alice!
+@enduml
+----
