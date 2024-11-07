@@ -313,3 +313,49 @@ endif()
 target_link_libraries(your_target_name external_project_name_lib)
 ```
 
+cmake to generate header file from xml:
+```cmake
+cmake_minimum_required(VERSION 3.10)
+project(MyProject)
+
+# Set the C++ standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# Define the XML file and the script
+set(XML_FILE ${CMAKE_SOURCE_DIR}/input.xml)
+set(SCRIPT ${CMAKE_SOURCE_DIR}/generate_code.py)
+
+# Define the output directory for generated files
+set(GENERATED_DIR ${CMAKE_BINARY_DIR}/generated)
+file(MAKE_DIRECTORY ${GENERATED_DIR})
+
+# Define the generated C++ files
+set(GENERATED_CPP_FILES
+    ${GENERATED_DIR}/generated_code1.cpp
+    ${GENERATED_DIR}/generated_code2.cpp
+    ${GENERATED_DIR}/generated_code3.cpp
+)
+set(GENERATED_H_FILES
+    ${GENERATED_DIR}/generated_code1.h
+    ${GENERATED_DIR}/generated_code2.h
+    ${GENERATED_DIR}/generated_code3.h
+)
+
+# Add a custom command to run the script and generate the C++ files
+add_custom_command(
+    OUTPUT ${GENERATED_CPP_FILES} ${GENERATED_H_FILES}
+    COMMAND ${CMAKE_COMMAND} -E env python ${SCRIPT} ${XML_FILE} ${GENERATED_DIR}
+    DEPENDS ${XML_FILE} ${SCRIPT}
+    COMMENT "Generating C++ code from XML"
+    VERBATIM
+)
+
+# Add a custom target that depends on the generated files
+add_custom_target(generate_code ALL DEPENDS ${GENERATED_CPP_FILES} ${GENERATED_H_FILES})
+
+# Add the executable and link the generated files
+add_executable(MyProject main.cpp ${GENERATED_CPP_FILES})
+add_dependencies(MyProject generate_code)
+include_directories(${GENERATED_DIR})
+```
