@@ -1,0 +1,53 @@
+// To build it, you can use the asciidoctor command:
+// asciidoctor-pdf -a pdf-theme=asciidoc-resource/custom-theme.yml -a pdf-fontsdir=asciidoc-resource/static asciidoc_note.adoc
+
+= 我的文档
+作者姓名
+2023-10-10
+
+
+Engish version
+
+
+random text
+
+== Introduction
+
+This is a simple AsciiDoc document. AsciiDoc is a lightweight markup language for writing documents, articles, books, etc.
+
+[mono]
+This text is in monospace font.
+
+[source,cpp]
+----
+#include <iostream>
+
+int main() {
+    std::cout << "Hello, World!" << std::endl;
+    return 0;
+}
+----
+
+== 介绍
+
+这是一个简单的AsciiDoc文档。AsciiDoc是一种轻量级标记语言，用于编写文档、文章、书籍等。
+
+== 部分1
+
+在这一部分中，我们将介绍一些基本的AsciiDoc语法。
+
+=== 子部分1.1
+
+你可以使用三个等号创建子部分。
+
+* 项目符号
+* 是这样创建的
+* 像这样
+
+=== 子部分1.2
+
+你还可以创建编号列表：
+
+. 第一项
+. 第二项
+. 第三项

@@ -1,0 +1,32 @@
+# custom-theme.yml
+extends: default
+
+# Specify the font catalog
+font:
+  catalog:
+    NotoSerifSC:
+      normal: NotoSerifSC-Regular.ttf
+      bold: NotoSerifSC-Bold.ttf
+      italic: NotoSerifSC-Regular.ttf
+      bold_italic: NotoSerifSC-Bold.ttf
+
+# Set the base font family to the Chinese-supporting font
+base:
+  font-family: NotoSerifSC
+  font-size: 12
+  line-height-length: 1.5
+  page-background-color: FFFFFF
+  page-margin: [36, 48, 36, 48]
+  page-size: A4
+  page-layout: portrait
+
+# Customize the theme as needed
+heading:
+  font-family: NotoSerifSC
+  font-weight: bold
+  line-height-length: 1.5
+
+literal:
+  font-family: NotoSerifSC
+  font-size: 10
+  line-height-length: 1.5
