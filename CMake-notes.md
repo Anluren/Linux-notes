@@ -359,3 +359,9 @@ add_executable(MyProject main.cpp ${GENERATED_CPP_FILES})
 add_dependencies(MyProject generate_code)
 include_directories(${GENERATED_DIR})
 ```
+
+```
+# how to build compilation database with make
+# python compiledb : https://github.com/nickdiego/compiledb
+compiledb -n make
+```
