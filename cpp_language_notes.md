@@ -118,3 +118,126 @@ int main() {
 }
 ```
 
+### Using `std::unique_ptr`
+
+`std::unique_ptr` is a smart pointer in C++ that provides automatic memory management for dynamically allocated objects. It ensures that the object it points to is deleted when the `std::unique_ptr` goes out of scope, preventing memory leaks. Unlike `std::shared_ptr`, `std::unique_ptr` has sole ownership of the object, meaning it cannot be copied, only moved.
+
+#### Basic Usage of `std::unique_ptr`
+
+Here's an example of how to use `std::unique_ptr`:
+
+```cpp
+#include <iostream>
+#include <memory>
+
+class MyClass {
+public:
+    MyClass(int value) : value(value) {
+        std::cout << "MyClass constructed with value " << value << std::endl;
+    }
+    ~MyClass() {
+        std::cout << "MyClass destructed" << std::endl;
+    }
+    int getValue() const { return value; }
+
+private:
+    int value;
+};
+
+int main() {
+    // Create a unique_ptr to a MyClass object
+    std::unique_ptr<MyClass> ptr = std::make_unique<MyClass>(42);
+
+    // Access the object through the unique_ptr
+    std::cout << "Value: " << ptr->getValue() << std::endl;
+
+    // Transfer ownership to another unique_ptr using std::move
+    std::unique_ptr<MyClass> ptr2 = std::move(ptr);
+
+    // Check if the original unique_ptr is now empty
+    if (!ptr) {
+        std::cout << "ptr is now empty" << std::endl;
+    }
+
+    // Access the object through the new unique_ptr
+    std::cout << "Value: " << ptr2->getValue() << std::endl;
+
+    // The MyClass object will be automatically deleted when ptr2 goes out of scope
+    return 0;
+}
+```
+
+### Explanation
+
+- **Creating a `std::unique_ptr`**: Use `std::make_unique` to create a `std::unique_ptr` to a dynamically allocated object.
+- **Accessing the Object**: Use the `->` operator to access members of the object.
+- **Transferring Ownership**: Use `std::move` to transfer ownership of the object from one `std::unique_ptr` to another.
+- **Automatic Deletion**: The object is automatically deleted when the `std::unique_ptr` goes out of scope.
+
+### Summary
+
+`std::unique_ptr` provides automatic memory management for dynamically allocated objects, ensuring that the object is deleted when the `std::unique_ptr` goes out of scope. It has sole ownership of the object and cannot be copied, only moved. The provided example demonstrates how to create, access, and transfer ownership of a `std::unique_ptr`.
+
+
+### Using `std::shared_ptr`
+
+`std::shared_ptr` is another smart pointer in C++ that provides automatic memory management for dynamically allocated objects. Unlike `std::unique_ptr`, `std::shared_ptr` allows multiple smart pointers to share ownership of the same object. The object is deleted when the last `std::shared_ptr` owning it is destroyed or reset.
+
+#### Basic Usage of `std::shared_ptr`
+
+Here's an example of how to use `std::shared_ptr`:
+
+```cpp
+#include <iostream>
+#include <memory>
+
+class MyClass {
+public:
+    MyClass(int value) : value(value) {
+        std::cout << "MyClass constructed with value " << value << std::endl;
+    }
+    ~MyClass() {
+        std::cout << "MyClass destructed" << std::endl;
+    }
+    int getValue() const { return value; }
+
+private:
+    int value;
+};
+
+int main() {
+    // Create a shared_ptr to a MyClass object
+    std::shared_ptr<MyClass> ptr1 = std::make_shared<MyClass>(42);
+
+    // Create another shared_ptr that shares ownership of the same object
+    std::shared_ptr<MyClass> ptr2 = ptr1;
+
+    // Access the object through the shared_ptr
+    std::cout << "Value: " << ptr1->getValue() << std::endl;
+    std::cout << "Value: " << ptr2->getValue() << std::endl;
+
+    // Check the reference count
+    std::cout << "Reference count: " << ptr1.use_count() << std::endl;
+
+    // Reset one of the shared_ptrs
+    ptr1.reset();
+
+    // Check the reference count after reset
+    std::cout << "Reference count after reset: " << ptr2.use_count() << std::endl;
+
+    // The MyClass object will be automatically deleted when the last shared_ptr goes out of scope
+    return 0;
+}
+```
+
+### Explanation
+
+- **Creating a `std::shared_ptr`**: Use `std::make_shared` to create a `std::shared_ptr` to a dynamically allocated object.
+- **Sharing Ownership**: Multiple `std::shared_ptr` instances can share ownership of the same object.
+- **Accessing the Object**: Use the `->` operator to access members of the object.
+- **Reference Count**: Use the `use_count` method to check the number of `std::shared_ptr` instances sharing ownership of the object.
+- **Automatic Deletion**: The object is automatically deleted when the last `std::shared_ptr` owning it is destroyed or reset.
+
+### Summary
+
+`std::shared_ptr` provides automatic memory management for dynamically allocated objects, allowing multiple smart pointers to share ownership of the same object. The object is deleted when the last `std::shared_ptr` owning it is destroyed or reset. The provided example demonstrates how to create, share ownership, access, and manage the reference count of a `std::shared_ptr`.
