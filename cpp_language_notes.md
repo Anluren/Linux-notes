@@ -241,3 +241,42 @@ int main() {
 ### Summary
 
 `std::shared_ptr` provides automatic memory management for dynamically allocated objects, allowing multiple smart pointers to share ownership of the same object. The object is deleted when the last `std::shared_ptr` owning it is destroyed or reset. The provided example demonstrates how to create, share ownership, access, and manage the reference count of a `std::shared_ptr`.
+
+
+No, a static object declared inside a function is initialized only once, the first time the function is called. Subsequent calls to the function will use the already initialized object. This behavior ensures that the object retains its state between function calls.
+
+Example
+Here's an example to illustrate this behavior:
+```cpp
+#include <iostream>
+
+class MyClass {
+public:
+    MyClass(int value) : value(value) {
+        std::cout << "MyClass constructed with value " << value << std::endl;
+    }
+    void setValue(int newValue) {
+        value = newValue;
+    }
+    int getValue() const {
+        return value;
+    }
+
+private:
+    int value;
+};
+
+void myFunction(int param) {
+    static MyClass obj(param); // Initialized only once
+    std::cout << "Current value: " << obj.getValue() << std::endl;
+    obj.setValue(param); // Update the value
+}
+
+int main() {
+    myFunction(10); // First call, initializes obj with 10
+    myFunction(20); // Second call, obj is not re-initialized, retains its state
+    myFunction(30); // Third call, obj is not re-initialized, retains its state
+
+    return 0;
+}
+```
