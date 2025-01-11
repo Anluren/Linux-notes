@@ -31,3 +31,12 @@ set_target_properties(TestSCIntUint PROPERTIES CXX_STANDARD ${SYSTEMC_CXX_STANDA
 
 # Link SystemC library
 target_link_libraries(TestSCIntUint SystemC::systemc)
+
+# add new target with test_sc_struct.cpp
+add_executable(TestSCStruct test_sc_struct.cpp)
+
+# Set the C++ standard to the one used by SystemC
+set_target_properties(TestSCStruct PROPERTIES CXX_STANDARD ${SYSTEMC_CXX_STANDARD} CXX_STANDARD_REQUIRED YES)
+
+# Link SystemC library
+target_link_libraries(TestSCStruct SystemC::systemc)
