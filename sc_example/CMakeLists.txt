@@ -9,7 +9,8 @@ if(NOT DEFINED SYSTEMC_HOME)
     if(DEFINED ENV{SYSTEMC_HOME})
         set(SYSTEMC_HOME $ENV{SYSTEMC_HOME})
     else()
-        message(FATAL_ERROR "SYSTEMC_HOME is not set. Please specify the SystemC installation path using -DSYSTEMC_HOME=/path/to/systemc or set the SYSTEMC_HOME environment variable.")
+        # Add the dependencies directory to handle downloading and installing SystemC
+        add_subdirectory(dependencies)
     endif()
 endif()
 
