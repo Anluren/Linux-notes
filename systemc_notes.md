@@ -98,9 +98,13 @@ Use a build system like CMake to compile and run your SystemC application.
 cmake_minimum_required(VERSION 3.10)
 project(SystemCExample)
 
-# Check if SYSTEMC_HOME is set
+# Check if SYSTEMC_HOME is set as a CMake parameter or environment variable
 if(NOT DEFINED SYSTEMC_HOME)
-    message(FATAL_ERROR "SYSTEMC_HOME is not set. Please specify the SystemC installation path using -DSYSTEMC_HOME=/path/to/systemc")
+    if(DEFINED ENV{SYSTEMC_HOME})
+        set(SYSTEMC_HOME $ENV{SYSTEMC_HOME})
+    else()
+        message(FATAL_ERROR "SYSTEMC_HOME is not set. Please specify the SystemC installation path using -DSYSTEMC_HOME=/path/to/systemc or set the SYSTEMC_HOME environment variable.")
+    endif()
 endif()
 
 # Include SystemC headers and libraries
@@ -116,12 +120,25 @@ target_link_libraries(SystemCExample systemc)
 
 ### Build and Run
 
-When configuring your project with CMake, you can pass the `SYSTEMC_HOME` parameter using the `-D` option:
+You can either pass the `SYSTEMC_HOME` parameter using the `-D` option or set the `SYSTEMC_HOME` environment variable:
+
+#### Using CMake Parameter
 
 ```sh
 mkdir build
 cd build
 cmake -DSYSTEMC_HOME=/path/to/install/systemc ..
+make
+./SystemCExample
+```
+
+#### Using Environment Variable
+
+```sh
+export SYSTEMC_HOME=/path/to/install/systemc
+mkdir build
+cd build
+cmake ..
 make
 ./SystemCExample
 ```
