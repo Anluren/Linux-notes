@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 project(TestSCIntUint)
 
+# Add the cmake directory to the module path
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
+
 # Check if SYSTEMC_HOME is set as a CMake parameter or environment variable
 if(NOT DEFINED SYSTEMC_HOME)
     if(DEFINED ENV{SYSTEMC_HOME})
@@ -10,45 +13,14 @@ if(NOT DEFINED SYSTEMC_HOME)
     endif()
 endif()
 
-# Find SystemC package
-find_package(SystemCLanguage CONFIG REQUIRED PATHS ${SYSTEMC_HOME}/lib/cmake/SystemCLanguage NO_DEFAULT_PATH)
+# Include the FindSystemC.cmake file
+include(FindSystemC)
 
-if(NOT SystemCLanguage_FOUND)
-    message(FATAL_ERROR "SystemC package not found in ${SYSTEMC_HOME}/lib/cmake/SystemCLanguage")
+# Check if SystemC was found and configured correctly
+if(NOT SYSTEMC_FOUND)
+    message(WARNING "SystemC was not found or configured correctly. Skipping the build of TestSCIntUint target.")
+    return()
 endif()
-
-# Retrieve the C++ standard from SystemCLanguageConfig.cmake
-if(DEFINED SystemC_CXX_STANDARD)
-    set(SYSTEMC_CXX_STANDARD ${SystemC_CXX_STANDARD})
-    message(STATUS "SystemC::systemc C++ standard: ${SYSTEMC_CXX_STANDARD}")
-else()
-    message(FATAL_ERROR "SystemC_CXX_STANDARD is not set in SystemCLanguageConfig.cmake")
-endif()
-
-# Print the library files
-message(STATUS "SystemC library files:")
-get_target_property(SYSTEMC_LIB SystemC::systemc LOCATION)
-message(STATUS "SystemC::systemc: ${SYSTEMC_LIB}")
-
-# Dump properties of SystemC::systemc
-get_target_property(SYSTEMC_INCLUDE_DIRS SystemC::systemc INTERFACE_INCLUDE_DIRECTORIES)
-message(STATUS "SystemC::systemc include directories: ${SYSTEMC_INCLUDE_DIRS}")
-
-get_target_property(SYSTEMC_LINK_LIBRARIES SystemC::systemc INTERFACE_LINK_LIBRARIES)
-message(STATUS "SystemC::systemc link libraries: ${SYSTEMC_LINK_LIBRARIES}")
-
-get_target_property(SYSTEMC_COMPILE_OPTIONS SystemC::systemc INTERFACE_COMPILE_OPTIONS)
-message(STATUS "SystemC::systemc compile options: ${SYSTEMC_COMPILE_OPTIONS}")
-
-# Verify the C++ standard
-if(NOT SYSTEMC_CXX_STANDARD)
-    message(FATAL_ERROR "SystemC::systemc C++ standard is not set.")
-elseif(SYSTEMC_CXX_STANDARD LESS 17)
-    message(FATAL_ERROR "SystemC::systemc requires at least C++17.")
-endif()
-
-# Include SystemC headers
-include_directories(${SYSTEMC_INCLUDE_DIRS})
 
 # Add executable
 add_executable(TestSCIntUint test_sc_int_uint.cpp)
