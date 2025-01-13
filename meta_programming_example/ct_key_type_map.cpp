@@ -1,5 +1,5 @@
 #include <iostream>
-#include <type_traits>
+#include <typeinfo>
 
 // Define the KeyTypePair and KeyTypeMap as described above
 template <auto Key, typename T>
@@ -31,6 +31,31 @@ struct FindTypeByKey<Key, KeyTypeMap<>> {
 template <auto Key, typename Map>
 using GetTypeByKey = typename FindTypeByKey<Key, Map>::type;
 
+// Define the iteration mechanism
+template <typename Map, template <auto, typename> class Func>
+struct IterateMap;
+
+template <template <auto, typename> class Func>
+struct IterateMap<KeyTypeMap<>, Func> {
+    static void apply() {}
+};
+
+template <typename FirstPair, typename... RestPairs, template <auto, typename> class Func>
+struct IterateMap<KeyTypeMap<FirstPair, RestPairs...>, Func> {
+    static void apply() {
+        Func<FirstPair::key, typename FirstPair::type>::apply();
+        IterateMap<KeyTypeMap<RestPairs...>, Func>::apply();
+    }
+};
+
+// Define a functor to print each key/type pair
+template <auto Key, typename T>
+struct PrintKeyType {
+    static void apply() {
+        std::cout << "Key: " << Key << ", Type: " << typeid(T).name() << std::endl;
+    }
+};
+
 // Define some types and keys
 struct TypeA {};
 struct TypeB {};
@@ -48,19 +73,8 @@ int main() {
         KeyTypePair<KeyC, TypeC>
     >;
 
-    // Get types by key
-    using TypeForKeyA = GetTypeByKey<KeyA, MyMap>;
-    using TypeForKeyB = GetTypeByKey<KeyB, MyMap>;
-    using TypeForKeyC = GetTypeByKey<KeyC, MyMap>;
-    using TypeForKeyD = GetTypeByKey<4, MyMap>; // Key not in map
-
-    // Static assertions to verify the types
-    static_assert(std::is_same_v<TypeForKeyA, TypeA>, "TypeForKeyA should be TypeA");
-    static_assert(std::is_same_v<TypeForKeyB, TypeB>, "TypeForKeyB should be TypeB");
-    static_assert(std::is_same_v<TypeForKeyC, TypeC>, "TypeForKeyC should be TypeC");
-    static_assert(std::is_same_v<TypeForKeyD, void>, "TypeForKeyD should be void");
-
-    std::cout << "All static assertions passed." << std::endl;
+    // Iterate over the map and print each key/type pair
+    IterateMap<MyMap, PrintKeyType>::apply();
 
     return 0;
 }
