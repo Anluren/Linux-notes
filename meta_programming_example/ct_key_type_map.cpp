@@ -14,36 +14,18 @@ struct KeyTypeMap;
 template <auto Key, typename Map>
 struct FindTypeByKey;
 
-template <auto Key, typename... Pairs>
-struct FindTypeByKey<Key, KeyTypeMap<Pairs...>> {
-private:
-    template <typename Pair>
-    static constexpr bool match() {
-        return Key == Pair::key;
-    }
+template <auto Key, typename FirstPair, typename... RestPairs>
+struct FindTypeByKey<Key, KeyTypeMap<FirstPair, RestPairs...>> {
+    using type = std::conditional_t<
+        (Key == FirstPair::key),
+        typename FirstPair::type,
+        typename FindTypeByKey<Key, KeyTypeMap<RestPairs...>>::type
+    >;
+};
 
-    template <typename Pair>
-    static constexpr auto get_type() -> typename Pair::type;
-
-    template <typename...>
-    struct TypeHelper;
-
-    template <typename Pair, typename... Rest>
-    struct TypeHelper<Pair, Rest...> {
-        using type = std::conditional_t<
-            match<Pair>(),
-            typename Pair::type,
-            typename TypeHelper<Rest...>::type
-        >;
-    };
-
-    template <>
-    struct TypeHelper<> {
-        using type = void; // Default type if key is not found
-    };
-
-public:
-    using type = typename TypeHelper<Pairs...>::type;
+template <auto Key>
+struct FindTypeByKey<Key, KeyTypeMap<>> {
+    using type = void; // Default type if key is not found
 };
 
 template <auto Key, typename Map>
@@ -80,7 +62,7 @@ constexpr int KeyD = 4;
 constexpr int KeyE = 5;
 
 int main() {
-    // Define the key/type map with many-to-one mappings
+    // Define the key/type map
     using MyMap = KeyTypeMap<
         KeyTypePair<KeyA, TypeA>,
         KeyTypePair<KeyB, TypeB>,
