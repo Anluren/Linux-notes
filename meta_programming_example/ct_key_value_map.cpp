@@ -13,32 +13,14 @@ struct KeyValueMap;
 template <auto Key, typename Map>
 struct FindValueByKey;
 
-template <auto Key, typename... Pairs>
-struct FindValueByKey<Key, KeyValueMap<Pairs...>> {
-private:
-    template <typename Pair>
-    static constexpr bool match() {
-        return Key == Pair::key;
-    }
+template <auto Key, typename FirstPair, typename... RestPairs>
+struct FindValueByKey<Key, KeyValueMap<FirstPair, RestPairs...>> {
+    static constexpr auto value = (Key == FirstPair::key) ? FirstPair::value : FindValueByKey<Key, KeyValueMap<RestPairs...>>::value;
+};
 
-    template <typename Pair>
-    static constexpr auto get_value() -> decltype(Pair::value);
-
-    template <typename...>
-    struct ValueHelper;
-
-    template <typename Pair, typename... Rest>
-    struct ValueHelper<Pair, Rest...> {
-        static constexpr auto value = match<Pair>() ? Pair::value : ValueHelper<Rest...>::value;
-    };
-
-    template <>
-    struct ValueHelper<> {
-        static constexpr auto value = static_cast<unsigned int>(-1); // Default value if key is not found
-    };
-
-public:
-    static constexpr auto value = ValueHelper<Pairs...>::value;
+template <auto Key>
+struct FindValueByKey<Key, KeyValueMap<>> {
+    static constexpr auto value = static_cast<unsigned int>(-1); // Default value if key is not found
 };
 
 template <auto Key, typename Map>
