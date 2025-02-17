@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<books>
+<books xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="books_only.xsd">
     <book id="bk103">
         <author>Corets, Eva</author>
         <title>Maeve Ascendant</title>
