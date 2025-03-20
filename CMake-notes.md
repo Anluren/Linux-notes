@@ -267,6 +267,28 @@ endif()
 
 ```
 
+example to download Google on given directory
+```
+include(FetchContent)
+
+# Specify the subdirectory where GoogleTest will be fetched
+set(GTEST_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/third_party/googletest)
+
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        release-1.12.1  # Use a specific release tag
+  SOURCE_DIR     ${GTEST_SOURCE_DIR}
+)
+
+# Fetch the content
+FetchContent_MakeAvailable(googletest)
+
+# Add GoogleTest to your project
+enable_testing()
+add_subdirectory(${GTEST_SOURCE_DIR})
+```
+
 ```cmake
 # ---------------------------------------------------------------------------------------
 # External project configuration
